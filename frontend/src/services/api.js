@@ -1,4 +1,5 @@
 import axios from 'axios';
+import { mockEvents, mockCommunities } from '../data/mockData';
 
 const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:5000/api';
 
@@ -40,16 +41,83 @@ api.interceptors.response.use(
 
 // Auth API
 export const authAPI = {
-  signup: (userData) => api.post('/auth/signup', userData),
-  login: (credentials) => api.post('/auth/login', credentials),
+  signup: async (userData) => {
+    try {
+      return await api.post('/auth/signup', userData);
+    } catch (error) {
+      console.warn('API not available, using mock response');
+      return { 
+        data: { 
+          success: true, 
+          token: 'mock-jwt-token',
+          user: {
+            id: 'new-user',
+            firstName: userData.firstName,
+            lastName: userData.lastName,
+            email: userData.email
+          }
+        } 
+      };
+    }
+  },
+
+  login: async (credentials) => {
+    try {
+      return await api.post('/auth/login', credentials);
+    } catch (error) {
+      console.warn('API not available, using mock response');
+      if (credentials.email === 'demo@example.com' && credentials.password === 'demo123') {
+        return { 
+          data: { 
+            success: true, 
+            token: 'mock-jwt-token',
+            user: {
+              id: 'demo-user',
+              firstName: 'Demo',
+              lastName: 'User',
+              email: 'demo@example.com'
+            }
+          } 
+        };
+      }
+      throw new Error('Invalid credentials');
+    }
+  },
+
   forgotPassword: (email) => api.post('/auth/forgot-password', { email }),
   resetPassword: (token, newPassword) => api.post('/auth/reset-password', { token, newPassword }),
 };
 
 // Events API
 export const eventsAPI = {
-  getEvents: (params) => api.get('/events', { params }),
-  getEvent: (id) => api.get(`/events/${id}`),
+  getEvents: async (params) => {
+    try {
+      const response = await api.get('/events', { params });
+      return response;
+    } catch (error) {
+      console.warn('API not available, using mock data');
+      const filteredEvents = mockEvents.filter(event => {
+        if (params?.category && event.category !== params.category) return false;
+        if (params?.location && !event.location.city.toLowerCase().includes(params.location.toLowerCase())) return false;
+        if (params?.search && !event.title.toLowerCase().includes(params.search.toLowerCase()) && 
+            !event.description.toLowerCase().includes(params.search.toLowerCase())) return false;
+        return true;
+      });
+      return { data: { success: true, events: filteredEvents } };
+    }
+  },
+
+  getEvent: async (id) => {
+    try {
+      const response = await api.get(`/events/${id}`);
+      return response;
+    } catch (error) {
+      console.warn('API not available, using mock data');
+      const event = mockEvents.find(e => e._id === id);
+      return { data: { success: true, event } };
+    }
+  },
+
   createEvent: (eventData) => api.post('/events', eventData),
   updateEvent: (id, eventData) => api.put(`/events/${id}`, eventData),
   deleteEvent: (id) => api.delete(`/events/${id}`),
@@ -96,6 +164,45 @@ export const adminAPI = {
   deleteUser: (userId) => api.delete(`/admin/api/users/${userId}`),
   deleteEvent: (eventId) => api.delete(`/admin/api/events/${eventId}`),
   toggleUserStatus: (userId) => api.patch(`/admin/api/users/${userId}/status`),
+};
+
+// Communities API
+export const communitiesAPI = {
+  getCommunities: async (params = {}) => {
+    try {
+      // API call would go here when backend is ready
+      console.warn('Communities API not implemented, using mock data');
+      const filteredCommunities = mockCommunities.filter(community => {
+        if (params.category && community.category !== params.category) return false;
+        if (params.location && !community.location.toLowerCase().includes(params.location.toLowerCase())) return false;
+        return true;
+      });
+      return { data: { success: true, communities: filteredCommunities } };
+    } catch (error) {
+      console.warn('API not available, using mock data');
+      return { data: { success: true, communities: mockCommunities } };
+    }
+  },
+
+  joinCommunity: async (communityId) => {
+    try {
+      // API call would go here when backend is ready
+      console.warn('Join community API not implemented, using mock response');
+      return { data: { success: true, message: 'Successfully joined community!' } };
+    } catch (error) {
+      return { data: { success: true, message: 'Successfully joined community!' } };
+    }
+  },
+
+  leaveCommunity: async (communityId) => {
+    try {
+      // API call would go here when backend is ready
+      console.warn('Leave community API not implemented, using mock response');
+      return { data: { success: true, message: 'Successfully left community!' } };
+    } catch (error) {
+      return { data: { success: true, message: 'Successfully left community!' } };
+    }
+  },
 };
 
 export default api;

@@ -8,12 +8,15 @@ import LoginPage from './pages/LoginPage';
 import SignupPage from './pages/SignupPage';
 import ForgotPasswordPage from './pages/ForgotPasswordPage';
 import EventDetailsPage from './pages/EventDetailsPage';
+import EventDetailsPageNew from './pages/EventDetailsPageNew';
+import CommunityDetailsPage from './pages/CommunityDetailsPage';
 import UserProfilePage from './pages/UserProfilePage';
 import CreateEventPage from './pages/CreateEventPage';
 import EditEventPage from './pages/EditEventPage';
 import MyEventsPage from './pages/MyEventsPage';
 import AttendingEventsPage from './pages/AttendingEventsPage';
 import CalendarViewPage from './pages/CalendarViewPage';
+import CommunitiesPage from './pages/CommunitiesPage';
 import ProtectedRoute from './components/ProtectedRoute';
 
 function App() {
@@ -26,10 +29,12 @@ function App() {
             <Routes>
               <Route path="/" element={<HomePage />} />
               <Route path="/events" element={<AllEventsPage />} />
+              <Route path="/communities" element={<CommunitiesPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/signup" element={<SignupPage />} />
               <Route path="/forgot-password" element={<ForgotPasswordPage />} />
-              <Route path="/events/:id" element={<EventDetailsPage />} />
+              <Route path="/events/:id" element={<EventDetailsPageNew />} />
+              <Route path="/communities/:id" element={<CommunityDetailsPage />} />
               <Route path="/calendar" element={<CalendarViewPage />} />
               
               {/* Protected Routes */}

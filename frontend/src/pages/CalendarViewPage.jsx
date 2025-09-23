@@ -15,8 +15,10 @@ const CalendarViewPage = () => {
 
   const fetchEvents = async () => {
     try {
-      const response = await eventsAPI.getAllEvents();
-      setEvents(response.data.events || []);
+      const response = await eventsAPI.getEvents();
+      if (response.data.success) {
+        setEvents(response.data.events || []);
+      }
     } catch (err) {
       setError('Failed to load events');
     } finally {
