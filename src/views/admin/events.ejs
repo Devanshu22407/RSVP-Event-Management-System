@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title><%= title %></title>
+  </head>
+  <body>
+    <h1>Events</h1>
+    <table border="1" cellpadding="6">
+      <thead>
+        <tr>
+          <th>Title</th>
+          <th>Category</th>
+          <th>Date</th>
+          <th>Created By</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% events.forEach(function(e){ %>
+          <tr>
+            <td><%= e.title %></td>
+            <td><%= e.category %></td>
+            <td><%= new Date(e.date).toLocaleDateString() %></td>
+            <td><%= e.createdBy?.name %></td>
+          </tr>
+        <% }); %>
+      </tbody>
+    </table>
+  </body>
+  </html>
+
+
