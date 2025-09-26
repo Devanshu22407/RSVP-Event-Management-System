@@ -14,7 +14,7 @@ const AllEventsPage = () => {
   const [totalPages, setTotalPages] = useState(1);
   const [totalEvents, setTotalEvents] = useState(0);
   
-  const [filters, setFilters] = useState({
+  const [filters, setFilters] = useState({ 
     category: '',
     location: '',
     search: '',

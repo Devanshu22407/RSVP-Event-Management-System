@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
 import { eventsAPI } from '../services/api';
 import AnimatedButton from '../components/AnimatedButton';
+import concertBackground from '../assets/concert-background.jpg';
 
 const HomePage = () => {
   const { user, isAuthenticated } = useAuth();
@@ -61,59 +62,20 @@ const HomePage = () => {
   return (
     <div className="min-h-screen bg-gray-50">
       {/* Hero Section */}
-      <section className="bg-gradient-to-r from-blue-600 to-blue-800 text-white py-20">
-        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center">
-          <h1 className="text-4xl md:text-6xl font-bold mb-6">
-            {isAuthenticated ? `Welcome back, ${user?.name}!` : 'Discover Amazing Events'}
+      <section 
+        className="relative text-white py-20 bg-cover bg-center bg-no-repeat"
+        style={{ 
+          backgroundImage: `linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.5)), url(${concertBackground})`,
+          minHeight: '500px'
+        }}
+      >
+        <div className="container mx-auto px-4 sm:px-6 lg:px-8 text-center relative z-10">
+          <h1 className="text-4xl md:text-6xl font-bold mb-6 drop-shadow-lg">
+            {isAuthenticated ? `Welcome back, ${user?.name}!` : 'Welcome back, Devanshu!'}
           </h1>
-          <p className="text-xl md:text-2xl mb-8 text-blue-100">
+          <p className="text-xl md:text-2xl mb-8 text-gray-100 drop-shadow-lg">
             Connect with your community through exciting events and meetups
           </p>
-          <div className="flex flex-col sm:flex-row gap-4 justify-center">
-            {isAuthenticated ? (
-              <>
-                <Link 
-                  to="/events" 
-                  className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                >
-                  Explore All Events
-                </Link>
-                <Link 
-                  to="/create-event" 
-                  className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                >
-                  Create Event
-                </Link>
-                <Link 
-                  to="/my-events" 
-                  className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                >
-                  My Events
-                </Link>
-              </>
-            ) : (
-              <>
-                <Link 
-                  to="/events" 
-                  className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors"
-                >
-                  Explore All Events
-                </Link>
-                <Link 
-                  to="/signup" 
-                  className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                >
-                  Get Started
-                </Link>
-                <Link 
-                  to="/login" 
-                  className="border-2 border-white text-white px-8 py-3 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors"
-                >
-                  Sign In
-                </Link>
-              </>
-            )}
-          </div>
         </div>
       </section>
 
